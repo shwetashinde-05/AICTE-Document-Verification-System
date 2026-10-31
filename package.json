@@ -1,0 +1,8 @@
+{
+  "name": "aicte-sih26261-root",
+  "private": true,
+  "scripts": {
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build:frontend": "npm --prefix frontend run build"
+  }
+}
