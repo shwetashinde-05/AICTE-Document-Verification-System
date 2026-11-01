@@ -27,7 +27,7 @@ from .config import UPLOAD_DIR, SAMPLE_DOCS_DIR, APP_TITLE, APP_VERSION
 app = FastAPI(
     title=APP_TITLE,
     version=APP_VERSION,
-    description="SIH26261 Decision Support System for AICTE Application Validation, Document Authentication and Regulatory Compliance"
+    description="AICTE SmartVerify - Application Validation, Document Authentication & Regulatory Compliance Support System"
 )
 
 # Enable CORS for external frontend or localhost dev servers
@@ -46,18 +46,7 @@ STATE = {
     "rules": [dict(r) for r in DEFAULT_COMPLIANCE_RULES],
     "categories": [dict(c) for c in SUPPORTED_CATEGORIES],
     "issuer_registry": dict(SIMULATED_ISSUER_REGISTRY),
-    "audit_trail": [
-        {
-            "action_id": "AUD-INIT-001",
-            "application_id": "APP-2026-001",
-            "officer_name": "Dr. R. K. Sharma",
-            "officer_role": "Scrutiny Officer - Western Regional Office",
-            "action_type": "Observation Added",
-            "remarks": "System initialized. AI-assisted checks executed on Doc_A_Correct_EoA.pdf. High fidelity match confirmed.",
-            "timestamp": "2026-06-18 14:22:00 IST",
-            "related_finding_id": None
-        }
-    ]
+    "audit_trail": []
 }
 
 # Pre-run verification on initial applications so findings are fully populated
@@ -165,23 +154,29 @@ def get_application_by_id(app_id: str):
     raise HTTPException(status_code=404, detail="Application not found")
 
 class CreateAppRequest(BaseModel):
-    category: str
-    academic_year: str
-    institution_name: str
-    permanent_id: str
-    contact_email: str
+    category: str = "Extension of Approval (EoA)"
+    academic_year: str = "2026-27"
+    institution_name: str = "ABC Institute of Technology"
+    permanent_id: str = "1-1234567890"
+    contact_email: Optional[str] = "principal@abctech.edu.in"
+    application_id: Optional[str] = None
+    courses: Optional[List[Dict[str, Any]]] = None
 
 @app.post("/api/applications/create")
 def create_application(req: CreateAppRequest):
-    new_id = f"APP-2026-{len(STATE['applications']) + 1:03d}"
+    app_num = len(STATE['applications']) + 1
+    new_id = f"APP-2026-{app_num:03d}"
+    app_id_val = req.application_id if req.application_id else f"APP-2026-{app_num:03d}"
+    
     app_record = {
         "id": new_id,
-        "application_id": f"APP-DEMO-{len(STATE['applications']) + 1:03d}",
+        "application_id": app_id_val,
         "institution_id": "INST-PUNE-01",
         "institution_name": req.institution_name or "ABC Institute of Technology",
         "permanent_id": req.permanent_id or "1-1234567890",
         "academic_year": req.academic_year or "2026-27",
         "category": req.category or "Extension of Approval (EoA)",
+        "contact_email": req.contact_email or "principal@abctech.edu.in",
         "status": "Draft",
         "created_at": datetime.datetime.now().isoformat(),
         "submitted_at": None,
@@ -192,6 +187,20 @@ def create_application(req: CreateAppRequest):
         "overall_score": 0.0
     }
     STATE["applications"][new_id] = app_record
+    
+    # Record in audit trail
+    audit_entry = {
+        "action_id": f"AUD-APP-{uuid.uuid4().hex[:6].upper()}",
+        "application_id": app_id_val,
+        "officer_name": "Institution Portal",
+        "officer_role": "College Nodal Officer",
+        "action_type": "Application Created",
+        "remarks": f"New application created for {app_record['institution_name']} (PID: {app_record['permanent_id']}). Ready for document upload.",
+        "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S IST"),
+        "related_finding_id": None
+    }
+    STATE["audit_trail"].insert(0, audit_entry)
+    
     return {"status": "success", "data": app_record}
 
 @app.post("/api/applications/{app_id}/submit")
@@ -199,8 +208,22 @@ def submit_application(app_id: str):
     if app_id not in STATE["applications"]:
         raise HTTPException(status_code=404, detail="Application not found")
     app_data = STATE["applications"][app_id]
-    app_data["status"] = "Submitted"
+    current_status = app_data.get("status", "Draft")
+    app_data["status"] = current_status if current_status != "Draft" else "Submitted"
     app_data["submitted_at"] = datetime.datetime.now().isoformat()
+    
+    audit_entry = {
+        "action_id": f"AUD-SUB-{uuid.uuid4().hex[:6].upper()}",
+        "application_id": app_data.get("application_id", app_id),
+        "officer_name": "Institution Portal",
+        "officer_role": "College Principal",
+        "action_type": "Application Submitted",
+        "remarks": f"Application submitted for AICTE regulatory scrutiny. Preliminary verification score: {app_data.get('overall_score', 0)}%",
+        "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S IST"),
+        "related_finding_id": None
+    }
+    STATE["audit_trail"].insert(0, audit_entry)
+    
     return {"status": "success", "message": "Application submitted for AICTE preliminary verification", "data": app_data}
 
 # --- DOCUMENT UPLOAD & OCR EXTRACTION ---
@@ -263,10 +286,6 @@ async def upload_document(
     anomaly_flags = []
     if is_duplicate:
         anomaly_flags.append("Identical Document SHA-256 Checksum detected in another submission.")
-    if "MISSING" in dest_filename.upper() or "INCOMPLETE" in dest_filename.upper():
-        anomaly_flags.append("Missing mandatory institutional identifiers or missing signature section.")
-    if "180" in extraction_res["text"] and "120" not in extraction_res["text"]:
-        anomaly_flags.append("Unsanctioned student intake figure detected in extracted curriculum schedule.")
 
     doc_record = {
         "id": f"DOC-{uuid.uuid4().hex[:6]}",
@@ -426,7 +445,23 @@ def run_demo_scenario(scenario_name: str):
     """
     target_app_id = "APP-2026-001"
     if target_app_id not in STATE["applications"]:
-        target_app_id = list(STATE["applications"].keys())[0]
+        STATE["applications"][target_app_id] = {
+            "id": target_app_id,
+            "application_id": "APP-2026-001",
+            "institution_id": "INST-PUNE-01",
+            "institution_name": "ABC Institute of Technology",
+            "permanent_id": "1-1234567890",
+            "academic_year": "2026-27",
+            "category": "Extension of Approval (EoA)",
+            "status": "Draft",
+            "created_at": datetime.datetime.now().isoformat(),
+            "submitted_at": datetime.datetime.now().isoformat(),
+            "documents": [],
+            "findings": [],
+            "infrastructure_items": [dict(item) for item in DEFAULT_INFRASTRUCTURE_ITEMS],
+            "reviewer_actions": [],
+            "overall_score": 0.0
+        }
         
     app_data = STATE["applications"][target_app_id]
     
@@ -522,7 +557,7 @@ def serve_index():
 def health():
     return {
         "status": "healthy",
-        "service": "AICTE SIH26261 Decision Support API",
+        "service": "AICTE SmartVerify API",
         "version": APP_VERSION,
         "server_time": datetime.datetime.now().isoformat()
     }

@@ -40,6 +40,7 @@ class ExtractedMetadata(BaseModel):
     cert_numbers: List[str] = []
     raw_text_length: int = 0
     confidence_score: float = 0.95
+    has_signature_block: bool = False
     extraction_method: str = "PyMuPDF_Tesseract_Hybrid"
     page_count: int = 1
 

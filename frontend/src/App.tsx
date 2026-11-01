@@ -22,7 +22,7 @@ export const App: React.FC = () => {
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
       <header className="bg-[#002147] text-white p-3 text-xs">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div className="font-bold">AICTE SIH26261 | AI-Powered Compliance Verification Prototype</div>
+          <div className="font-bold">AICTE SmartVerify | Application Validation & Compliance Portal</div>
           <div className="flex gap-2 items-center">
             <span>Portal:</span>
             <select
@@ -46,7 +46,7 @@ export const App: React.FC = () => {
             {role === 'aicte_admin' && 'AICTE System Administrator Portal'}
           </h1>
           <p className="text-xs text-slate-500 mt-1">
-            Active Application: {activeApp?.application_id || 'APP-DEMO-001'} • Status: {activeApp?.status || 'Active'}
+            Active Application: {activeApp?.application_id || 'None'} • Status: {activeApp?.status || 'Active'}
           </p>
         </div>
       </main>

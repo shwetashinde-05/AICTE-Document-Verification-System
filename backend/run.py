@@ -7,7 +7,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 if __name__ == "__main__":
     print("==========================================================================")
-    print("AICTE SIH26261 - AI-POWERED APPLICATION VALIDATION & COMPLIANCE VERIFICATION")
+    print("AICTE SMARTVERIFY - APPLICATION VALIDATION & REGULATORY COMPLIANCE SYSTEM")
     print("==========================================================================")
     print("Starting FastAPI Backend Server on http://127.0.0.1:8000 ...")
     print("Swagger API Documentation: http://127.0.0.1:8000/docs")

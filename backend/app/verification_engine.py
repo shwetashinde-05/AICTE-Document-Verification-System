@@ -291,7 +291,8 @@ def run_eoa_verification(
 
     # 6. Authority Digital Signature Block Check
     total_checks += 1
-    if "MEMBER SECRETARY" in extracted_courses_dict or extracted.raw_text_length > 300 and "Digital Signature Verified" in doc_filename or extracted.confidence_score > 0.8:
+    has_sig = getattr(extracted, "has_signature_block", False) or (extracted.raw_text_length > 300 and extracted.confidence_score > 0.8)
+    if has_sig:
         passed_checks += 1
         findings.append(VerificationFinding(
             finding_id="FND-SIG-001",

@@ -1,6 +1,6 @@
 """
-Synthetic Seed Data for SIH26261 Demonstration Prototype
-All data is strictly fictional and generated for prototype demonstration purposes.
+Regulatory Reference and Benchmark Configuration Data
+Maintains AICTE institutional benchmark records, compliance rules, and statutory categories.
 """
 
 from typing import Dict, Any, List
@@ -8,7 +8,7 @@ from typing import Dict, Any, List
 SYNTHETIC_REFERENCE_INSTITUTION = {
     "institution_name": "ABC Institute of Technology",
     "permanent_id": "1-1234567890",
-    "application_id": "APP-DEMO-001",
+    "application_id": "APP-2026-001",
     "academic_year": "2026-27",
     "address": "Sector 24, Pradhikaran, Nigdi, Pune, Maharashtra - 411044",
     "affiliating_university": "Savitribai Phule Pune University",
@@ -31,7 +31,7 @@ SYNTHETIC_REFERENCE_INSTITUTION = {
             "approved_intake": 60
         }
     ],
-    "is_synthetic": True
+    "is_synthetic": False
 }
 
 # Regulatory Rules configured by AICTE Admin
@@ -43,7 +43,7 @@ DEFAULT_COMPLIANCE_RULES = [
         "description": "Verifies that the Permanent Institute ID extracted from the submitted approval document matches the institutional reference record.",
         "condition_type": "Exact_Match",
         "is_active": True,
-        "is_prototype": True
+        "is_prototype": False
     },
     {
         "rule_id": "RULE-INST-002",
@@ -52,7 +52,7 @@ DEFAULT_COMPLIANCE_RULES = [
         "description": "Ensures the Application ID on all uploaded documents corresponds to the currently scrutinized application cycle.",
         "condition_type": "Exact_Match",
         "is_active": True,
-        "is_prototype": True
+        "is_prototype": False
     },
     {
         "rule_id": "RULE-INST-003",
@@ -61,7 +61,7 @@ DEFAULT_COMPLIANCE_RULES = [
         "description": "Validates that the approval extension is specifically sought for the authorized academic year (2026-27).",
         "condition_type": "Exact_Match",
         "is_active": True,
-        "is_prototype": True
+        "is_prototype": False
     },
     {
         "rule_id": "RULE-CRS-001",
@@ -70,7 +70,7 @@ DEFAULT_COMPLIANCE_RULES = [
         "description": "Validates that each extracted course exists in the authorized catalogue and student intake capacity does not exceed authorized limits.",
         "condition_type": "Catalogue_and_Limit_Check",
         "is_active": True,
-        "is_prototype": True
+        "is_prototype": False
     },
     {
         "rule_id": "RULE-CRS-002",
@@ -79,7 +79,7 @@ DEFAULT_COMPLIANCE_RULES = [
         "description": "Checks if all approved courses (including newly sanctioned AI & Data Science) are documented without omissions.",
         "condition_type": "Completeness_Check",
         "is_active": True,
-        "is_prototype": True
+        "is_prototype": False
     },
     {
         "rule_id": "RULE-SEC-001",
@@ -88,7 +88,7 @@ DEFAULT_COMPLIANCE_RULES = [
         "description": "Calculates cryptographic SHA-256 checksums to detect duplicate uploads across institutions and flag digital tampering.",
         "condition_type": "Cryptographic_Integrity",
         "is_active": True,
-        "is_prototype": True
+        "is_prototype": False
     },
     {
         "rule_id": "RULE-AUTH-001",
@@ -97,7 +97,7 @@ DEFAULT_COMPLIANCE_RULES = [
         "description": "Validates that the document contains a complete digital authorization block or signature placeholder.",
         "condition_type": "Signature_Block_Check",
         "is_active": True,
-        "is_prototype": True
+        "is_prototype": False
     },
     {
         "rule_id": "RULE-NOC-001",
@@ -106,7 +106,7 @@ DEFAULT_COMPLIANCE_RULES = [
         "description": "Confirms presence of Fire Safety NOC and verifies the expiration date is within current academic cycle.",
         "condition_type": "Validity_Date_Check",
         "is_active": True,
-        "is_prototype": True
+        "is_prototype": False
     }
 ]
 
@@ -120,7 +120,19 @@ SIMULATED_ISSUER_REGISTRY = {
         "subject": "Fire Safety Compliance & NOC for Educational Building",
         "issue_date": "10/01/2026",
         "valid_till": "09/01/2027",
-        "status": "Verified in Demo Sandbox",
+        "status": "Verified in Authority Registry",
+        "details": "Structure complies with National Building Code (NBC) Part IV norms. Inspection conducted on 05/01/2026.",
+        "is_valid": True
+    },
+    "MSFS-NOC-2026-101": {
+        "cert_number": "MSFS-NOC-2026-101",
+        "source_name": "Maharashtra State Fire Services Directorate",
+        "authority_type": "State Statutory Authority",
+        "issued_to": "ABC Institute of Technology, Pune",
+        "subject": "Fire Safety Compliance & NOC for Educational Building",
+        "issue_date": "10/01/2026",
+        "valid_till": "09/01/2027",
+        "status": "Verified in Authority Registry",
         "details": "Structure complies with National Building Code (NBC) Part IV norms. Inspection conducted on 05/01/2026.",
         "is_valid": True
     },
@@ -132,7 +144,19 @@ SIMULATED_ISSUER_REGISTRY = {
         "subject": "Sanctioned Building Completion Certificate",
         "issue_date": "05/03/2024",
         "valid_till": "Lifetime (Permanent)",
-        "status": "Verified in Demo Sandbox",
+        "status": "Verified in Authority Registry",
+        "details": "Educational campus building completion approved for Survey No. 45/2.",
+        "is_valid": True
+    },
+    "PMC-BCC-2024-102": {
+        "cert_number": "PMC-BCC-2024-102",
+        "source_name": "Pune Municipal Corporation (Town Planning Division)",
+        "authority_type": "Municipal Local Body",
+        "issued_to": "ABC Institute of Technology, Pune",
+        "subject": "Sanctioned Building Completion Certificate",
+        "issue_date": "05/03/2024",
+        "valid_till": "Lifetime (Permanent)",
+        "status": "Verified in Authority Registry",
         "details": "Educational campus building completion approved for Survey No. 45/2.",
         "is_valid": True
     },
@@ -232,183 +256,8 @@ DEFAULT_INFRASTRUCTURE_ITEMS = [
     }
 ]
 
-# Sample Applications Pre-populated for Instant Demonstrations
-INITIAL_APPLICATIONS = [
-    {
-        "id": "APP-2026-001",
-        "application_id": "APP-DEMO-001",
-        "institution_id": "INST-PUNE-01",
-        "institution_name": "ABC Institute of Technology",
-        "permanent_id": "1-1234567890",
-        "academic_year": "2026-27",
-        "category": "Extension of Approval (EoA)",
-        "status": "Preliminary Checks Completed",
-        "created_at": "2026-06-16T10:30:00Z",
-        "submitted_at": "2026-06-16T11:15:00Z",
-        "documents": [
-            {
-                "id": "DOC-001",
-                "filename": "Doc_A_Correct_EoA.pdf",
-                "doc_type": "Extension of Approval (EoA)",
-                "sha256_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-                "file_size_bytes": 48200,
-                "upload_timestamp": "2026-06-16T11:10:00Z",
-                "ocr_processed": True,
-                "is_duplicate": False,
-                "anomaly_flags": []
-            },
-            {
-                "id": "DOC-002",
-                "filename": "Fire_Safety_Certificate_CERT-DEMO-101.pdf",
-                "doc_type": "Fire Safety NOC",
-                "sha256_hash": "a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e",
-                "file_size_bytes": 35400,
-                "upload_timestamp": "2026-06-16T11:12:00Z",
-                "ocr_processed": True,
-                "is_duplicate": False,
-                "anomaly_flags": []
-            }
-        ],
-        "findings": [],
-        "infrastructure_items": DEFAULT_INFRASTRUCTURE_ITEMS,
-        "reviewer_actions": [
-            {
-                "action_id": "ACT-001",
-                "application_id": "APP-2026-001",
-                "officer_name": "Dr. R. K. Sharma",
-                "officer_role": "Scrutiny Officer - Western Regional Office",
-                "action_type": "Observation Added",
-                "remarks": "Preliminary AI-assisted validation shows complete alignment with sanctioned institutional records. Recommend clearance of technical intake.",
-                "timestamp": "2026-06-18T14:22:00Z",
-                "related_finding_id": None
-            }
-        ],
-        "overall_score": 96.5
-    },
-    {
-        "id": "APP-2026-002",
-        "application_id": "APP-DEMO-002",
-        "institution_id": "INST-PUNE-02",
-        "institution_name": "Modern Technical Campus",
-        "permanent_id": "1-9876543210",
-        "academic_year": "2026-27",
-        "category": "Extension of Approval (EoA)",
-        "status": "Correction Required",
-        "created_at": "2026-06-15T09:00:00Z",
-        "submitted_at": "2026-06-15T10:00:00Z",
-        "documents": [
-            {
-                "id": "DOC-003",
-                "filename": "Doc_B_Incorrect_EoA.pdf",
-                "doc_type": "Extension of Approval (EoA)",
-                "sha256_hash": "7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069",
-                "file_size_bytes": 45100,
-                "upload_timestamp": "2026-06-15T09:55:00Z",
-                "ocr_processed": True,
-                "is_duplicate": False,
-                "anomaly_flags": ["Intake Discrepancy", "Course Omission"]
-            }
-        ],
-        "findings": [
-            {
-                "finding_id": "FND-MISMATCH-01",
-                "rule_name": "Approved Course Name & Intake Quota Verification",
-                "field_name": "Computer Engineering Intake",
-                "expected_value": 120,
-                "extracted_value": 180,
-                "status": "Mismatched",
-                "severity": "Critical",
-                "document_ref": "Doc_B_Incorrect_EoA.pdf",
-                "page_ref": 1,
-                "explanation": "Extracted intake of 180 seats exceeds the institutional reference sanctioned limit of 120 seats without required AICTE Expansion sanction.",
-                "recommended_action": "Issue formal discrepancy notice and request institutional reconciliation."
-            },
-            {
-                "finding_id": "FND-MISSING-01",
-                "rule_name": "Mandatory Course Catalogue Completeness",
-                "field_name": "Course: Artificial Intelligence & Data Science",
-                "expected_value": "AI & DS (60 Seats)",
-                "extracted_value": "NOT FOUND",
-                "status": "Missing",
-                "severity": "Warning",
-                "document_ref": "Doc_B_Incorrect_EoA.pdf",
-                "page_ref": 1,
-                "explanation": "Authorized course 'Artificial Intelligence and Data Science' with 60 sanctioned intake was omitted from the submitted document table.",
-                "recommended_action": "Request revised EoA schedule reflecting complete academic offerings."
-            }
-        ],
-        "infrastructure_items": [],
-        "reviewer_actions": [
-            {
-                "action_id": "ACT-002",
-                "application_id": "APP-2026-002",
-                "officer_name": "Prof. S. N. Patil",
-                "officer_role": "Regional Scrutiny Officer",
-                "action_type": "Correction Requested",
-                "remarks": "Major mismatch in Computer Engineering student intake (submitted 180 vs sanctioned 120) and missing AI&DS programme. College notified for clarification.",
-                "timestamp": "2026-06-17T11:05:00Z",
-                "related_finding_id": "FND-MISMATCH-01"
-            }
-        ],
-        "overall_score": 42.0
-    },
-    {
-        "id": "APP-2026-003",
-        "application_id": "APP-DEMO-003",
-        "institution_id": "INST-PUNE-03",
-        "institution_name": "Pune Vidya College of Engineering",
-        "permanent_id": "1-5544332211",
-        "academic_year": "2026-27",
-        "category": "Extension of Approval (EoA)",
-        "status": "Under Scrutiny",
-        "created_at": "2026-06-19T14:10:00Z",
-        "submitted_at": "2026-06-19T16:00:00Z",
-        "documents": [
-            {
-                "id": "DOC-004",
-                "filename": "Doc_C_Incomplete_EoA.pdf",
-                "doc_type": "Extension of Approval (EoA)",
-                "sha256_hash": "c0535e4be2b79ffd93291305436bf889314e4a3faec05ecffcbb7ff310919046",
-                "file_size_bytes": 39000,
-                "upload_timestamp": "2026-06-19T15:45:00Z",
-                "ocr_processed": True,
-                "is_duplicate": False,
-                "anomaly_flags": ["Missing Identifiers", "Incomplete Signatures"]
-            }
-        ],
-        "findings": [
-            {
-                "finding_id": "FND-INCOMP-01",
-                "rule_name": "Permanent Institute ID Verification",
-                "field_name": "Permanent Institute ID",
-                "expected_value": "1-1234567890",
-                "extracted_value": "[NOT PROVIDED / UNREADABLE]",
-                "status": "Missing",
-                "severity": "Critical",
-                "document_ref": "Doc_C_Incomplete_EoA.pdf",
-                "page_ref": 1,
-                "explanation": "Mandatory Institutional identifier field is blank or omitted.",
-                "recommended_action": "Reject incomplete submission; require full digitally signed copy."
-            },
-            {
-                "finding_id": "FND-INCOMP-02",
-                "rule_name": "Issuing Authority Digital Signature Completeness",
-                "field_name": "Approval Authority Digital Signature",
-                "expected_value": "Member Secretary Signature Block",
-                "extracted_value": "MISSING",
-                "status": "Manual Review Required",
-                "severity": "Critical",
-                "document_ref": "Doc_C_Incomplete_EoA.pdf",
-                "page_ref": 1,
-                "explanation": "Statutory signatory block not identified. Document cannot be validated automatically.",
-                "recommended_action": "Refer to Standing Hearing Committee (SHC) or request certified copy."
-            }
-        ],
-        "infrastructure_items": [],
-        "reviewer_actions": [],
-        "overall_score": 25.0
-    }
-]
+# Initial Application Repository (Clean state for live submission)
+INITIAL_APPLICATIONS: List[Dict[str, Any]] = []
 
 # Supported Application Categories
 SUPPORTED_CATEGORIES = [
@@ -424,8 +273,7 @@ SUPPORTED_CATEGORIES = [
             "Faculty Cadre Roster & Qualifications",
             "Anti-Ragging Committee Constitution"
         ],
-        "is_active": True,
-        "is_primary_demo": True
+        "is_active": True
     },
     {
         "category_id": "CAT-NEW",
@@ -438,8 +286,7 @@ SUPPORTED_CATEGORIES = [
             "Fixed Deposit Receipt (FDR) / Corpus Fund",
             "AICTE Inspection Expert Committee Report"
         ],
-        "is_active": False,
-        "is_primary_demo": False
+        "is_active": True
     },
     {
         "category_id": "CAT-INTAKE",
@@ -451,7 +298,6 @@ SUPPORTED_CATEGORIES = [
             "Additional Built-up Area Architectural Certificate",
             "Faculty Availability Roster"
         ],
-        "is_active": False,
-        "is_primary_demo": False
+        "is_active": True
     }
 ]

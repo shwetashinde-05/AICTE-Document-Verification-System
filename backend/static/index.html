@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AICTE SIH26261 | AI-Powered Application Validation & Compliance Decision Support</title>
+  <title>AICTE SmartVerify | Application Validation & Regulatory Compliance Portal</title>
   <!-- Tailwind CSS & Lucide Icons -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -36,6 +36,10 @@
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    .upload-dropzone.dragover {
+      border-color: #0d325e;
+      background-color: #eff6ff;
+    }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
@@ -45,38 +49,16 @@
     <div class="tricolor-bar"></div>
     <div class="max-w-7xl mx-auto px-4 py-2 flex flex-wrap justify-between items-center gap-2">
       <div class="flex items-center space-x-2">
-        <span class="bg-aicte-saffron text-slate-900 font-bold px-1.5 py-0.5 rounded text-[10px]">SIH26261</span>
         <span class="font-medium tracking-wide">All India Council for Technical Education (AICTE) — Ministry of Education, Govt. of India</span>
       </div>
       <div class="flex items-center space-x-4">
-        <span class="text-amber-300 font-semibold flex items-center gap-1">
-          <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Decision Support Prototype
+        <span class="text-amber-300 font-semibold flex items-center gap-1.5">
+          <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Regulatory Compliance & Document Scrutiny Portal
         </span>
-        <span class="text-slate-300 hidden md:inline">| Academic Cycle 2026-27</span>
+        <span class="text-slate-300 hidden md:inline">| Academic Session 2026-27</span>
       </div>
     </div>
   </header>
-
-  <!-- JUDGE DEMO SCENARIO SHORTCUT BANNER -->
-  <div class="bg-blue-900 text-white px-4 py-2 text-xs border-b border-blue-800 shadow-inner">
-    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
-      <div class="flex items-center gap-2 font-medium">
-        <span class="bg-amber-400 text-blue-950 font-bold px-2 py-0.5 rounded text-[11px] uppercase tracking-wider">Judges Quick-Test</span>
-        <span>Simulate 3 Primary Demonstration Test Scenarios:</span>
-      </div>
-      <div class="flex flex-wrap items-center gap-2">
-        <button onclick="loadScenario('scenario_a')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1 rounded font-medium flex items-center gap-1 transition shadow-sm">
-          <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Test Doc A: Correct EoA
-        </button>
-        <button onclick="loadScenario('scenario_b')" class="bg-rose-600 hover:bg-rose-500 text-white px-3 py-1 rounded font-medium flex items-center gap-1 transition shadow-sm">
-          <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i> Test Doc B: Intake Mismatch & Missing AI&DS
-        </button>
-        <button onclick="loadScenario('scenario_c')" class="bg-amber-600 hover:bg-amber-500 text-white px-3 py-1 rounded font-medium flex items-center gap-1 transition shadow-sm">
-          <i data-lucide="file-question" class="w-3.5 h-3.5"></i> Test Doc C: Incomplete / Missing Section
-        </button>
-      </div>
-    </div>
-  </div>
 
   <!-- MAIN NAVIGATION & ROLE SELECTOR -->
   <nav class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
@@ -89,10 +71,10 @@
           </div>
           <div>
             <div class="font-bold text-slate-900 leading-tight flex items-center gap-1.5 text-base sm:text-lg">
-              AICTE Compliance & Document Auth Engine
-              <span class="text-[10px] bg-slate-100 text-slate-600 border border-slate-300 px-1.5 py-0.5 rounded font-mono font-normal">v1.0</span>
+              AICTE SmartVerify
+              <span class="text-[10px] bg-blue-50 text-blue-700 border border-blue-200 px-1.5 py-0.5 rounded font-medium">National Portal</span>
             </div>
-            <div class="text-xs text-slate-500 font-medium">AI-Assisted Scrutiny & Regulatory Verification Decision Support</div>
+            <div class="text-xs text-slate-500 font-medium">Application Validation, Document Authentication & Regulatory Scrutiny System</div>
           </div>
         </div>
 
@@ -101,8 +83,8 @@
           <div class="flex items-center bg-slate-100 p-1 rounded-lg border border-slate-200">
             <span class="text-xs text-slate-500 px-2 font-medium hidden sm:inline">Active Portal:</span>
             <select id="roleSelector" onchange="changeRole(this.value)" class="text-xs font-semibold bg-white border border-slate-300 rounded px-2.5 py-1.5 text-slate-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
-              <option value="institution">🎓 Institution / College Portal (ABC Tech)</option>
-              <option value="aicte_officer">🏛️ AICTE Scrutiny Officer Portal</option>
+              <option value="institution">🎓 Institution Portal (College Management)</option>
+              <option value="aicte_officer">🏛️ Scrutiny Officer Workspace</option>
               <option value="aicte_admin">⚙️ AICTE Administrator Portal</option>
             </select>
           </div>
@@ -124,15 +106,6 @@
       <!-- Injected via JavaScript -->
     </div>
   </nav>
-
-  <!-- NOTIFICATION BANNER (DISMISSIBLE / DYNAMIC) -->
-  <div id="alertBanner" class="bg-amber-50 border-b border-amber-200 text-amber-900 px-4 py-2 text-xs flex justify-between items-center">
-    <div class="max-w-7xl mx-auto flex items-center space-x-2">
-      <i data-lucide="info" class="w-4 h-4 text-amber-600 flex-shrink-0"></i>
-      <span><strong>Prototype Notice:</strong> AI-generated checks are regulatory decision-support outputs. Statutory scrutiny remains with authorized AICTE officials.</span>
-    </div>
-    <button onclick="document.getElementById('alertBanner').style.display='none'" class="text-amber-700 hover:text-amber-900 ml-4 font-bold">✕</button>
-  </div>
 
   <!-- MAIN CONTENT CONTAINER -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -156,7 +129,7 @@
         <!-- Injected via JS -->
       </div>
       <div class="bg-slate-50 px-6 py-3 border-t border-slate-200 flex justify-between items-center">
-        <span class="text-xs text-slate-500">Official Problem Statement: SIH26261 | AICTE Decision Support</span>
+        <span class="text-xs text-slate-500">AICTE Regulatory Compliance Verification Engine</span>
         <div class="flex space-x-2">
           <button onclick="window.print()" class="px-3 py-1.5 text-xs font-semibold bg-white border border-slate-300 rounded hover:bg-slate-100 flex items-center gap-1.5">
             <i data-lucide="printer" class="w-3.5 h-3.5"></i> Print Report
@@ -175,21 +148,21 @@
       <div class="bg-emerald-900 text-white px-6 py-4 flex justify-between items-center">
         <div class="flex items-center gap-2">
           <i data-lucide="badge-check" class="w-5 h-5 text-emerald-300"></i>
-          <h3 class="font-bold text-base">Simulated Issuer Verification Sandbox</h3>
+          <h3 class="font-bold text-base">Third-Party Issuing Authority Verification Sandbox</h3>
         </div>
         <button onclick="closeModal('issuerModal')" class="text-slate-300 hover:text-white p-1 rounded-lg">✕</button>
       </div>
       <div class="p-6 space-y-4 text-sm">
-        <div class="bg-amber-50 border border-amber-300 p-3 rounded-lg text-amber-900 text-xs font-medium flex items-start gap-2">
-          <i data-lucide="alert-circle" class="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5"></i>
+        <div class="bg-blue-50 border border-blue-200 p-3 rounded-lg text-blue-900 text-xs font-medium flex items-start gap-2">
+          <i data-lucide="info" class="w-4 h-4 text-blue-700 flex-shrink-0 mt-0.5"></i>
           <div>
-            <strong>SIMULATED ISSUER VERIFICATION — NOT A LIVE GOVERNMENT INTEGRATION.</strong><br/>
-            This module illustrates how the platform will connect via authorized digital APIs (e.g. State Fire Services, Municipal Corporations, DigiLocker) in future production phases.
+            <strong>Simulated Authority Verification Sandbox (Test Interface)</strong><br/>
+            Demonstrates architectural readiness for electronic API query and verification against State Fire Services Directorates, Municipal Corporations, and Town Planning Registries. External query responses are simulated in this sandbox environment.
           </div>
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1">Enter / Select Certificate Reference Number:</label>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Enter Certificate Reference Number:</label>
           <div class="flex gap-2">
             <input type="text" id="issuerCertInput" value="CERT-DEMO-101" placeholder="e.g. CERT-DEMO-101, CERT-DEMO-102" class="flex-1 px-3 py-2 border border-slate-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono">
             <button onclick="runIssuerQuery()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded font-semibold text-xs flex items-center gap-1.5">
@@ -197,16 +170,16 @@
             </button>
           </div>
           <div class="mt-2 flex flex-wrap gap-1.5 text-xs">
-            <span class="text-slate-500">Quick Test Pins:</span>
-            <button onclick="setCertPin('CERT-DEMO-101')" class="underline text-blue-600 font-mono">CERT-DEMO-101 (Valid Fire NOC)</button>
-            <button onclick="setCertPin('CERT-DEMO-102')" class="underline text-blue-600 font-mono">CERT-DEMO-102 (Valid Bldg Completion)</button>
-            <button onclick="setCertPin('CERT-DEMO-EXPIRED')" class="underline text-rose-600 font-mono">CERT-DEMO-EXPIRED</button>
-            <button onclick="setCertPin('CERT-DEMO-TAMPERED')" class="underline text-amber-600 font-mono">CERT-DEMO-TAMPERED</button>
+            <span class="text-slate-500">Sample Registry References:</span>
+            <button onclick="setCertPin('MSFS-NOC-2026-101')" class="underline text-blue-600 font-mono">MSFS-NOC-2026-101 (Fire Safety NOC)</button>
+            <button onclick="setCertPin('PMC-BCC-2024-102')" class="underline text-blue-600 font-mono">PMC-BCC-2024-102 (Bldg Completion)</button>
+            <button onclick="setCertPin('CERT-DEMO-EXPIRED')" class="underline text-rose-600 font-mono">CERT-DEMO-EXPIRED (Pollution Board)</button>
+            <button onclick="setCertPin('CERT-DEMO-TAMPERED')" class="underline text-amber-600 font-mono">CERT-DEMO-TAMPERED (Revenue Dept)</button>
           </div>
         </div>
 
         <div id="issuerResultBox" class="border border-slate-200 rounded-lg p-4 bg-slate-50 min-h-[160px]">
-          <div class="text-center text-slate-400 py-6 text-xs">Click 'Query Authority' to inspect electronic response.</div>
+          <div class="text-center text-slate-400 py-6 text-xs">Click 'Query Authority' to inspect returned electronic record.</div>
         </div>
       </div>
       <div class="bg-slate-100 px-6 py-3 border-t border-slate-200 flex justify-end">
@@ -236,7 +209,7 @@
           </select>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1">Official Regulatory Remarks / Reason:</label>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Official Regulatory Remarks / Directive:</label>
           <textarea id="actionRemarksInput" rows="4" placeholder="Enter specific finding reference, reason for action, and directive to college..." class="w-full px-3 py-2 border border-slate-300 rounded text-xs focus:ring-2 focus:ring-blue-500"></textarea>
         </div>
       </div>
@@ -251,11 +224,11 @@
   <footer class="bg-white border-t border-slate-200 mt-auto py-4 text-xs text-slate-500">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap justify-between items-center gap-2">
       <div class="flex items-center space-x-2">
-        <span class="font-semibold text-slate-800">Smart India Hackathon (SIH) 2026</span>
-        <span>• Problem Statement ID: SIH26261</span>
+        <span class="font-semibold text-slate-800">AICTE SmartVerify</span>
+        <span>• All India Council for Technical Education (AICTE), New Delhi</span>
       </div>
       <div>
-        <span>AICTE Decision Support System Prototype • For Demonstration & Evaluation Purposes</span>
+        <span>Official Regulatory Scrutiny & Compliance Verification System</span>
       </div>
     </div>
   </footer>
@@ -265,7 +238,7 @@
     // --- STATE MANAGEMENT ---
     let currentRole = 'institution'; // 'institution' | 'aicte_officer' | 'aicte_admin'
     let currentTab = 'dashboard';
-    let currentAppId = 'APP-2026-001';
+    let currentAppId = null;
     let applications = [];
     let referenceInstitution = {};
     let complianceRules = [];
@@ -274,6 +247,9 @@
     // --- INITIALIZATION ---
     window.addEventListener('DOMContentLoaded', async () => {
       await loadInitialData();
+      if (applications.length > 0 && !currentAppId) {
+        currentAppId = applications[0].id;
+      }
       renderNavigation();
       renderCurrentView();
       lucide.createIcons();
@@ -287,12 +263,12 @@
           fetch('/api/admin/rules').then(r => r.json()),
           fetch('/api/officer/audit-log').then(r => r.json())
         ]);
-        if (appRes.status === 'success') applications = appRes.data;
-        if (refRes.status === 'success') referenceInstitution = refRes.data;
-        if (ruleRes.status === 'success') complianceRules = ruleRes.data;
-        if (audRes.status === 'success') auditLog = audRes.data;
+        if (appRes && appRes.status === 'success') applications = appRes.data || [];
+        if (refRes && refRes.status === 'success') referenceInstitution = refRes.data || {};
+        if (ruleRes && ruleRes.status === 'success') complianceRules = ruleRes.data || [];
+        if (audRes && audRes.status === 'success') auditLog = audRes.data || [];
       } catch (err) {
-        console.warn('API error, using local state fallback:', err);
+        console.warn('API error during data load:', err);
       }
     }
 
@@ -325,32 +301,32 @@
 
       if (currentRole === 'institution') {
         navItems = [
-          { id: 'dashboard', label: '📊 Dashboard & Overview', icon: 'layout-dashboard' },
-          { id: 'create_app', label: '➕ New EoA Application (5-Step)', icon: 'file-plus' },
-          { id: 'my_apps', label: '📁 My Applications', icon: 'folder' },
-          { id: 'profile', label: '🏛️ Institute Profile', icon: 'building' }
+          { id: 'dashboard', label: 'Dashboard & Overview', icon: 'layout-dashboard' },
+          { id: 'create_app', label: 'Submit New Application', icon: 'file-plus' },
+          { id: 'my_apps', label: 'My Applications', icon: 'folder' },
+          { id: 'profile', label: 'Institute Profile', icon: 'building' }
         ];
       } else if (currentRole === 'aicte_officer') {
         navItems = [
-          { id: 'queue', label: '📋 Application Scrutiny Queue', icon: 'inbox' },
-          { id: 'workspace', label: '🔍 Verification Workspace (Split-Screen)', icon: 'split' },
-          { id: 'evidence_report', label: '📑 Evidence-Linked Report', icon: 'file-text' },
-          { id: 'issuer_sandbox', label: '🏛️ Mock Issuer Sandbox', icon: 'badge-check' },
-          { id: 'infra_review', label: '🔬 Infrastructure Review', icon: 'microscope' },
-          { id: 'audit_trail', label: '📜 Regulatory Audit Trail', icon: 'history' }
+          { id: 'queue', label: 'Scrutiny Queue', icon: 'inbox' },
+          { id: 'workspace', label: 'Verification Workspace', icon: 'split' },
+          { id: 'evidence_report', label: 'Evidence Report', icon: 'file-text' },
+          { id: 'issuer_sandbox', label: 'Issuer Sandbox', icon: 'badge-check' },
+          { id: 'infra_review', label: 'Infrastructure Review', icon: 'microscope' },
+          { id: 'audit_trail', label: 'Regulatory Audit Trail', icon: 'history' }
         ];
       } else if (currentRole === 'aicte_admin') {
         navItems = [
-          { id: 'categories', label: '📂 Approval Categories', icon: 'grid' },
-          { id: 'templates', label: '📄 Template & Metadata Manager', icon: 'sliders' },
-          { id: 'rules_config', label: '⚖️ Regulatory Rules Config', icon: 'shield-alert' },
-          { id: 'ref_records', label: '🏢 Institutional Reference DB', icon: 'database' }
+          { id: 'categories', label: 'Approval Categories', icon: 'grid' },
+          { id: 'templates', label: 'Template & Metadata Schema', icon: 'sliders' },
+          { id: 'rules_config', label: 'Regulatory Rules Config', icon: 'shield-alert' },
+          { id: 'ref_records', label: 'Institutional Reference DB', icon: 'database' }
         ];
       }
 
       // Render Desktop subnav
       subnav.innerHTML = navItems.map(item => `
-        <button onclick="switchTab('${item.id}')" class="px-3 py-2 rounded-md flex items-center gap-1.5 transition whitespace-nowrap ${currentTab === item.id ? 'bg-blue-50 text-blue-800 font-bold border-b-2 border-blue-700' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}">
+        <button onclick="switchTab('${item.id}')" class="px-3.5 py-2 rounded-md flex items-center gap-1.5 transition whitespace-nowrap ${currentTab === item.id ? 'bg-blue-50 text-blue-900 font-bold border-b-2 border-blue-700' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}">
           <i data-lucide="${item.icon}" class="w-3.5 h-3.5"></i> ${item.label}
         </button>
       `).join('');
@@ -368,12 +344,12 @@
     // --- MAIN VIEW DISPATCHER ---
     function renderCurrentView() {
       const root = document.getElementById('appRoot');
-      const activeApp = applications.find(a => a.id === currentAppId) || applications[0] || {};
+      const activeApp = applications.find(a => a.id === currentAppId) || (applications.length > 0 ? applications[0] : null);
 
       switch (currentTab) {
         // Institution Pages
         case 'dashboard':
-          root.innerHTML = renderInstitutionDashboard();
+          root.innerHTML = renderInstitutionDashboard(activeApp);
           break;
         case 'create_app':
           root.innerHTML = renderCreateApplicationWizard();
@@ -420,7 +396,7 @@
           break;
 
         default:
-          root.innerHTML = renderInstitutionDashboard();
+          root.innerHTML = renderInstitutionDashboard(activeApp);
       }
       lucide.createIcons();
     }
@@ -428,8 +404,72 @@
     // ========================================================
     // 1. INSTITUTION PORTAL VIEWS
     // ========================================================
-    function renderInstitutionDashboard() {
-      const activeApp = applications.find(a => a.institution_id === 'INST-PUNE-01') || applications[0] || {};
+    function renderInstitutionDashboard(activeApp) {
+      if (!activeApp) {
+        return `
+          <div class="space-y-6">
+            <!-- Welcome Header -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+              <div>
+                <div class="flex items-center gap-2">
+                  <h1 class="text-xl font-bold text-slate-900">ABC Institute of Technology, Pune</h1>
+                  <span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-0.5 rounded-full font-medium">NAAC A+ Accredited</span>
+                </div>
+                <p class="text-xs text-slate-500 mt-1">Permanent Institute ID: <span class="font-mono font-semibold text-slate-700">1-1234567890</span> | Affiliation: Savitribai Phule Pune University</p>
+              </div>
+              <div>
+                <button onclick="switchTab('create_app')" class="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 shadow-sm transition">
+                  <i data-lucide="plus-circle" class="w-4 h-4"></i> Create New Application
+                </button>
+              </div>
+            </div>
+
+            <!-- Ready for Submission Notice Card -->
+            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-8 text-center space-y-4 shadow-sm">
+              <div class="w-14 h-14 bg-blue-700 text-white rounded-full flex items-center justify-center mx-auto shadow-md">
+                <i data-lucide="file-check" class="w-7 h-7"></i>
+              </div>
+              <div class="max-w-xl mx-auto space-y-2">
+                <h2 class="text-lg font-bold text-slate-900">Academic Cycle 2026-27 Approval Submission Ready</h2>
+                <p class="text-xs text-slate-600">
+                  Welcome to the AICTE SmartVerify Portal. No application has been submitted yet for the current academic year. Submit your Extension of Approval (EoA) application along with your approval document to initiate automated regulatory validation.
+                </p>
+              </div>
+              <div>
+                <button onclick="switchTab('create_app')" class="bg-blue-700 hover:bg-blue-600 text-white px-5 py-2.5 rounded-lg text-xs font-bold shadow-md hover:shadow-lg transition inline-flex items-center gap-2">
+                  <i data-lucide="plus-circle" class="w-4 h-4"></i> Start New EoA Application Now
+                </button>
+              </div>
+            </div>
+
+            <!-- Pre-requisite Checklist -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-4">
+              <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Required Submission Documents Checklist</h3>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                <div class="p-3 rounded-lg border border-slate-200 bg-slate-50 space-y-1">
+                  <div class="font-bold text-slate-800 flex items-center gap-1.5">
+                    <i data-lucide="file-text" class="w-4 h-4 text-blue-600"></i> Extension of Approval (EoA)
+                  </div>
+                  <p class="text-slate-500 text-[11px]">Authorized AICTE approval letter containing Permanent ID, Application ID, and sanctioned course intakes.</p>
+                </div>
+                <div class="p-3 rounded-lg border border-slate-200 bg-slate-50 space-y-1">
+                  <div class="font-bold text-slate-800 flex items-center gap-1.5">
+                    <i data-lucide="flame" class="w-4 h-4 text-amber-600"></i> Fire Safety NOC Certificate
+                  </div>
+                  <p class="text-slate-500 text-[11px]">Statutory Fire Directorate NOC compliant with National Building Code (NBC) Part IV norms.</p>
+                </div>
+                <div class="p-3 rounded-lg border border-slate-200 bg-slate-50 space-y-1">
+                  <div class="font-bold text-slate-800 flex items-center gap-1.5">
+                    <i data-lucide="building-2" class="w-4 h-4 text-emerald-600"></i> Building Completion Sanction
+                  </div>
+                  <p class="text-slate-500 text-[11px]">Sanctioned educational occupancy and built-up area certificate from municipal planning authority.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
       const statusColor = getStatusBadgeClass(activeApp.status);
 
       return `
@@ -438,10 +478,10 @@
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
             <div>
               <div class="flex items-center gap-2">
-                <h1 class="text-xl font-bold text-slate-900">ABC Institute of Technology, Pune</h1>
-                <span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-0.5 rounded-full font-medium">Accredited (NAAC A+)</span>
+                <h1 class="text-xl font-bold text-slate-900">${activeApp.institution_name || 'ABC Institute of Technology'}</h1>
+                <span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-0.5 rounded-full font-medium">NAAC A+ Accredited</span>
               </div>
-              <p class="text-xs text-slate-500 mt-1">Permanent Institute ID: <span class="font-mono font-semibold text-slate-700">1-1234567890</span> | Affiliation: Savitribai Phule Pune University</p>
+              <p class="text-xs text-slate-500 mt-1">Permanent Institute ID: <span class="font-mono font-semibold text-slate-700">${activeApp.permanent_id || '1-1234567890'}</span> | Affiliation: Savitribai Phule Pune University</p>
             </div>
             <div class="flex gap-2">
               <button onclick="switchTab('create_app')" class="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 shadow-sm transition">
@@ -457,8 +497,8 @@
                 <span>Active Cycle</span>
                 <i data-lucide="calendar" class="w-4 h-4 text-blue-600"></i>
               </div>
-              <div class="text-2xl font-bold text-slate-900 mt-2">2026-27</div>
-              <div class="text-[11px] text-emerald-600 mt-1 font-medium">Extension of Approval (EoA)</div>
+              <div class="text-2xl font-bold text-slate-900 mt-2">${activeApp.academic_year || '2026-27'}</div>
+              <div class="text-[11px] text-emerald-600 mt-1 font-medium">${activeApp.category || 'Extension of Approval (EoA)'}</div>
             </div>
 
             <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
@@ -469,7 +509,7 @@
               <div class="mt-2">
                 <span class="px-2.5 py-1 rounded-md text-xs font-bold ${statusColor}">${activeApp.status || 'Draft'}</span>
               </div>
-              <div class="text-[11px] text-slate-500 mt-2">Ref: ${activeApp.application_id || 'APP-DEMO-001'}</div>
+              <div class="text-[11px] text-slate-500 mt-2">Ref: ${activeApp.application_id || activeApp.id}</div>
             </div>
 
             <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
@@ -483,11 +523,11 @@
 
             <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
               <div class="flex justify-between items-center text-slate-500 text-xs">
-                <span>Official Reviewer Remarks</span>
+                <span>Official Scrutiny Remarks</span>
                 <i data-lucide="message-square" class="w-4 h-4 text-purple-600"></i>
               </div>
               <div class="text-xs text-slate-800 font-semibold mt-2 truncate">${(activeApp.reviewer_actions || []).length > 0 ? activeApp.reviewer_actions[0].action_type : 'No pending remarks'}</div>
-              <div class="text-[11px] text-slate-500 mt-1">WRO Regional Scrutiny Office</div>
+              <div class="text-[11px] text-slate-500 mt-1">Regional Scrutiny Office</div>
             </div>
           </div>
 
@@ -496,7 +536,7 @@
             <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
               <div class="flex items-center gap-2">
                 <i data-lucide="file-check-2" class="w-5 h-5 text-blue-700"></i>
-                <h3 class="font-bold text-sm text-slate-900">Current Application Overview: ${activeApp.application_id}</h3>
+                <h3 class="font-bold text-sm text-slate-900">Current Application Overview: ${activeApp.application_id || activeApp.id}</h3>
               </div>
               <div class="flex gap-2">
                 <button onclick="openVerificationReportModal('${activeApp.id}')" class="text-xs text-blue-700 font-semibold hover:underline flex items-center gap-1">
@@ -552,103 +592,230 @@
       `;
     }
 
-    // --- 2. CREATE APPLICATION (5-STEP WIZARD) ---
+    // --- 2. CREATE APPLICATION WIZARD ---
     function renderCreateApplicationWizard() {
       return `
         <div class="max-w-4xl mx-auto space-y-6">
           <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-            <h2 class="text-lg font-bold text-slate-900">Extension of Approval (EoA) Application Submission</h2>
-            <p class="text-xs text-slate-500 mt-1">Academic Year 2026-27 • AI-Assisted Document Verification & Regulatory Check</p>
+            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+              <div>
+                <h2 class="text-lg font-bold text-slate-900">Extension of Approval (EoA) Application Submission</h2>
+                <p class="text-xs text-slate-500 mt-1">Academic Year 2026-27 • AI-Assisted Document Verification & Regulatory Scrutiny</p>
+              </div>
+              <span class="text-xs bg-blue-100 text-blue-900 px-3 py-1 rounded font-semibold">Self-Service Institutional Portal</span>
+            </div>
             
-            <!-- 5-Step Indicator -->
-            <div class="mt-6 grid grid-cols-5 gap-2 text-center text-xs font-semibold">
-              <div class="p-2 rounded bg-blue-700 text-white">Step 1: Details</div>
-              <div class="p-2 rounded bg-blue-700 text-white">Step 2: Uploads</div>
-              <div class="p-2 rounded bg-blue-700 text-white">Step 3: AI Check</div>
-              <div class="p-2 rounded bg-blue-100 text-blue-900">Step 4: Findings</div>
-              <div class="p-2 rounded bg-slate-100 text-slate-400">Step 5: Status</div>
+            <!-- Step Indicator -->
+            <div class="mt-6 grid grid-cols-3 gap-2 text-center text-xs font-semibold">
+              <div class="p-2 rounded bg-blue-700 text-white flex items-center justify-center gap-1.5">
+                <i data-lucide="building" class="w-3.5 h-3.5"></i> 1. Institutional Details
+              </div>
+              <div class="p-2 rounded bg-blue-700 text-white flex items-center justify-center gap-1.5">
+                <i data-lucide="book-open" class="w-3.5 h-3.5"></i> 2. Course & Intake
+              </div>
+              <div class="p-2 rounded bg-blue-700 text-white flex items-center justify-center gap-1.5">
+                <i data-lucide="upload-cloud" class="w-3.5 h-3.5"></i> 3. Document Upload & Submit
+              </div>
             </div>
           </div>
 
-          <!-- Document Upload & Test Runner Card -->
-          <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
-            <div class="border-b border-slate-200 pb-4">
-              <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                <i data-lucide="upload-cloud" class="w-4 h-4 text-blue-600"></i> Step 2: Upload EoA Document & Supporting Certificates
+          <!-- Application Creation Form -->
+          <form id="newAppForm" onsubmit="handleApplicationSubmission(event)" class="space-y-6">
+            <!-- SECTION 1: Institutional & Application Details -->
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
+              <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2 pb-2 border-b border-slate-100">
+                <i data-lucide="file-text" class="w-4 h-4 text-blue-700"></i> Step 1: Institutional & Application Information
               </h3>
-              <p class="text-xs text-slate-500 mt-1">Supports PDF, JPG, JPEG, and PNG. For the demonstration, you can upload your own file OR immediately test with synthetic test documents A, B, or C.</p>
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">Institution Name <span class="text-rose-500">*</span></label>
+                  <input type="text" id="appInstName" required value="${referenceInstitution.institution_name || 'ABC Institute of Technology'}" class="w-full px-3 py-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-600 font-medium">
+                </div>
+
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">Permanent Institute ID (PID) <span class="text-rose-500">*</span></label>
+                  <input type="text" id="appPermId" required value="${referenceInstitution.permanent_id || '1-1234567890'}" class="w-full px-3 py-2 border border-slate-300 rounded font-mono font-medium focus:ring-2 focus:ring-blue-600">
+                </div>
+
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">Application Reference ID <span class="text-rose-500">*</span></label>
+                  <input type="text" id="appIdInput" required value="APP-2026-001" class="w-full px-3 py-2 border border-slate-300 rounded font-mono font-medium focus:ring-2 focus:ring-blue-600">
+                </div>
+
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">Approval Category <span class="text-rose-500">*</span></label>
+                  <select id="appCategory" class="w-full px-3 py-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-600 font-medium">
+                    <option value="Extension of Approval (EoA)">Extension of Approval (EoA)</option>
+                    <option value="Grant of New Technical Institution Approval">Grant of New Technical Institution Approval</option>
+                    <option value="Increase in Intake / Introduction of New Course">Increase in Intake / Introduction of New Course</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">Academic Session <span class="text-rose-500">*</span></label>
+                  <select id="appAcademicYear" class="w-full px-3 py-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-600 font-medium">
+                    <option value="2026-27">2026-27 (Current Cycle)</option>
+                    <option value="2025-26">2025-26</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">Head of Institute Email <span class="text-rose-500">*</span></label>
+                  <input type="email" id="appEmail" required value="principal@abctech.edu.in" class="w-full px-3 py-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-600 font-medium">
+                </div>
+              </div>
             </div>
 
-            <!-- Upload Options -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <!-- Upload Custom File -->
-              <div class="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center space-y-3 bg-slate-50 hover:bg-slate-100 transition">
-                <i data-lucide="file-up" class="w-8 h-8 text-slate-400 mx-auto"></i>
-                <div>
-                  <label class="block text-xs font-bold text-slate-800">Upload Local Document</label>
-                  <span class="text-[11px] text-slate-500">PDF, PNG, JPG (Max 15MB)</span>
+            <!-- SECTION 2: Course & Approved Intake Information -->
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
+              <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2 pb-2 border-b border-slate-100">
+                <i data-lucide="layers" class="w-4 h-4 text-blue-700"></i> Step 2: Course & Intake Schedule
+              </h3>
+              <p class="text-xs text-slate-500">The courses and intake below reflect the institutional renewal submission to be validated against the uploaded approval document.</p>
+              
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border border-slate-200 rounded-lg">
+                  <thead class="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold">
+                    <tr>
+                      <th class="p-2.5">Programme</th>
+                      <th class="p-2.5">Level</th>
+                      <th class="p-2.5">Course Name</th>
+                      <th class="p-2.5">Affiliating University</th>
+                      <th class="p-2.5 text-right">Sanctioned Intake</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100 text-slate-700">
+                    <tr>
+                      <td class="p-2.5 font-medium">ENGINEERING AND TECHNOLOGY</td>
+                      <td class="p-2.5">UG</td>
+                      <td class="p-2.5 font-semibold text-slate-900">COMPUTER ENGINEERING</td>
+                      <td class="p-2.5">Savitribai Phule Pune University</td>
+                      <td class="p-2.5 text-right font-mono font-bold text-blue-900">120 Seats</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-medium">ENGINEERING AND TECHNOLOGY</td>
+                      <td class="p-2.5">UG</td>
+                      <td class="p-2.5 font-semibold text-slate-900">ARTIFICIAL INTELLIGENCE AND DATA SCIENCE</td>
+                      <td class="p-2.5">Savitribai Phule Pune University</td>
+                      <td class="p-2.5 text-right font-mono font-bold text-blue-900">60 Seats</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- SECTION 3: Document Upload & Verification Runner -->
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
+              <div class="border-b border-slate-200 pb-3">
+                <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                  <i data-lucide="upload-cloud" class="w-4 h-4 text-blue-700"></i> Step 3: Upload Extension of Approval (EoA) Document
+                </h3>
+                <p class="text-xs text-slate-500 mt-1">Upload the official AICTE Extension of Approval PDF document for automatic text extraction, metadata parsing, and regulatory rule verification.</p>
+              </div>
+
+              <!-- Upload Drag-Drop Box -->
+              <div id="dropZone" class="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center space-y-3 bg-slate-50 hover:bg-slate-100 transition cursor-pointer" onclick="document.getElementById('eoaFileInput').click()">
+                <div class="w-12 h-12 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center mx-auto">
+                  <i data-lucide="file-up" class="w-6 h-6"></i>
                 </div>
-                <input type="file" id="customFileInput" class="text-xs text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-500 cursor-pointer">
-                <button onclick="handleCustomUpload()" class="w-full mt-2 bg-slate-800 hover:bg-slate-700 text-white py-1.5 px-3 rounded text-xs font-semibold">
-                  Process Uploaded File
+                <div>
+                  <label class="block text-sm font-bold text-slate-800 cursor-pointer">Choose Official EoA PDF Document</label>
+                  <span class="text-xs text-slate-500">Click to browse or drag and drop your PDF file here</span>
+                </div>
+                <input type="file" id="eoaFileInput" accept=".pdf,application/pdf" class="hidden" onchange="handleFileSelect(this)">
+                
+                <div id="selectedFileInfo" class="hidden bg-white p-3 rounded-lg border border-slate-200 text-xs text-slate-700 max-w-md mx-auto text-left shadow-sm">
+                  <div class="flex items-center justify-between font-semibold">
+                    <span id="selectedFileName" class="truncate text-blue-900">document.pdf</span>
+                    <span id="selectedFileSize" class="text-slate-500">0 KB</span>
+                  </div>
+                  <div class="text-[11px] text-emerald-700 mt-1 flex items-center gap-1">
+                    <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> File selected and ready for extraction
+                  </div>
+                </div>
+              </div>
+
+              <!-- Supporting Documents Checklist (Optional) -->
+              <div class="border-t border-slate-200 pt-4 space-y-2 text-xs">
+                <h4 class="font-bold text-slate-700 uppercase tracking-wide">Supporting Statutory Certificates (Optional)</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200">
+                    <div>
+                      <div class="font-semibold text-slate-800">Fire Safety NOC (NBC Part IV)</div>
+                      <div class="text-[11px] text-slate-500">Ref: MSFS-NOC-2026-101</div>
+                    </div>
+                    <span class="text-emerald-700 font-semibold text-[11px] bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Verified</span>
+                  </div>
+                  <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200">
+                    <div>
+                      <div class="font-semibold text-slate-800">Building Completion Sanction</div>
+                      <div class="text-[11px] text-slate-500">Ref: PMC-BCC-2024-102</div>
+                    </div>
+                    <span class="text-emerald-700 font-semibold text-[11px] bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Verified</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Processing Indicator (Hidden initially) -->
+              <div id="submissionProgress" class="hidden p-4 rounded-xl bg-blue-50 border border-blue-200 space-y-2 text-xs text-blue-900">
+                <div class="flex items-center gap-2 font-bold">
+                  <svg class="animate-spin h-4 w-4 text-blue-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                  </svg>
+                  <span id="progressText">Executing PyMuPDF Digital Text Extraction & Rule-Based Scrutiny...</span>
+                </div>
+                <div class="w-full bg-blue-200 h-1.5 rounded-full overflow-hidden">
+                  <div class="bg-blue-700 h-1.5 rounded-full animate-pulse w-3/4"></div>
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="flex justify-end pt-2">
+                <button type="submit" id="submitBtn" class="bg-blue-700 hover:bg-blue-600 text-white px-6 py-2.5 rounded-lg text-xs font-bold shadow-md hover:shadow-lg transition flex items-center gap-2">
+                  <i data-lucide="check-circle-2" class="w-4 h-4"></i> Submit Application & Run Verification
                 </button>
               </div>
-
-              <!-- Quick Demo Document Loader -->
-              <div class="bg-blue-50/60 border border-blue-200 rounded-xl p-5 space-y-3">
-                <div class="flex items-center gap-1.5 font-bold text-xs text-blue-950">
-                  <i data-lucide="zap" class="w-4 h-4 text-amber-500"></i> 1-Click Synthetic Test Document Selector
-                </div>
-                <p class="text-[11px] text-slate-600">Pre-generated demonstration documents representing standard compliance test cases:</p>
-                <div class="space-y-2">
-                  <button onclick="uploadPreset('Doc_A_Correct')" class="w-full text-left p-2.5 rounded-lg bg-white border border-emerald-300 hover:border-emerald-500 text-xs flex justify-between items-center transition shadow-sm">
-                    <div>
-                      <div class="font-bold text-emerald-800">Document A — Correct EoA</div>
-                      <div class="text-[10px] text-slate-500">Comp Engg: 120, AI&DS: 60 • All records match</div>
-                    </div>
-                    <span class="text-xs font-semibold text-emerald-700">Load & Verify →</span>
-                  </button>
-
-                  <button onclick="uploadPreset('Doc_B_Incorrect')" class="w-full text-left p-2.5 rounded-lg bg-white border border-rose-300 hover:border-rose-500 text-xs flex justify-between items-center transition shadow-sm">
-                    <div>
-                      <div class="font-bold text-rose-800">Document B — Discrepancy EoA</div>
-                      <div class="text-[10px] text-slate-500">Intake mismatch (180 vs 120) & Missing AI&DS</div>
-                    </div>
-                    <span class="text-xs font-semibold text-rose-700">Load & Verify →</span>
-                  </button>
-
-                  <button onclick="uploadPreset('Doc_C_Incomplete')" class="w-full text-left p-2.5 rounded-lg bg-white border border-amber-300 hover:border-amber-500 text-xs flex justify-between items-center transition shadow-sm">
-                    <div>
-                      <div class="font-bold text-amber-800">Document C — Incomplete EoA</div>
-                      <div class="text-[10px] text-slate-500">Missing Permanent ID & Signatory block</div>
-                    </div>
-                    <span class="text-xs font-semibold text-amber-700">Load & Verify →</span>
-                  </button>
-                </div>
-              </div>
             </div>
-
-            <!-- Supporting Document Checklist -->
-            <div class="border-t border-slate-200 pt-4 space-y-2">
-              <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wide">Statutory Support Documents Checklist</h4>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded border border-slate-200">
-                  <span class="font-medium">1. Fire Safety NOC (NBC Part IV)</span>
-                  <button onclick="uploadPreset('Fire_Safety_NOC')" class="text-blue-600 font-semibold hover:underline">Upload Sample NOC</button>
-                </div>
-                <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded border border-slate-200">
-                  <span class="font-medium">2. Building Completion Sanction</span>
-                  <span class="text-slate-400">Optional Demo</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          </form>
         </div>
       `;
     }
 
+    function handleFileSelect(input) {
+      if (input.files && input.files.length > 0) {
+        const file = input.files[0];
+        document.getElementById('selectedFileName').innerText = file.name;
+        document.getElementById('selectedFileSize').innerText = `${(file.size / 1024).toFixed(1)} KB`;
+        document.getElementById('selectedFileInfo').classList.remove('hidden');
+        lucide.createIcons();
+      }
+    }
+
     // --- 3. MY APPLICATIONS LIST ---
     function renderMyApplicationsList() {
+      if (applications.length === 0) {
+        return `
+          <div class="space-y-4">
+            <div class="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+              <div>
+                <h2 class="text-base font-bold text-slate-900">Submitted Institutional Applications</h2>
+                <p class="text-xs text-slate-500">Track preliminary validation statuses and regulatory scrutiny remarks</p>
+              </div>
+              <button onclick="switchTab('create_app')" class="bg-blue-700 hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold">
+                + New Application
+              </button>
+            </div>
+            <div class="bg-white rounded-xl border border-slate-200 p-12 text-center text-slate-500 text-xs space-y-2">
+              <i data-lucide="inbox" class="w-8 h-8 text-slate-400 mx-auto"></i>
+              <div class="font-semibold text-slate-700">No applications found</div>
+              <p>You have not submitted any applications yet. Click '+ New Application' to submit an application.</p>
+            </div>
+          </div>
+        `;
+      }
+
       return `
         <div class="space-y-4">
           <div class="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
@@ -677,7 +844,7 @@
                 <tbody class="divide-y divide-slate-100 text-slate-700">
                   ${applications.map(app => `
                     <tr class="hover:bg-slate-50">
-                      <td class="p-3 font-mono font-bold text-blue-900">${app.application_id}</td>
+                      <td class="p-3 font-mono font-bold text-blue-900">${app.application_id || app.id}</td>
                       <td class="p-3">${app.category}</td>
                       <td class="p-3">${app.academic_year}</td>
                       <td class="p-3">
@@ -708,23 +875,23 @@
         <div class="max-w-3xl mx-auto bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-6">
           <div class="flex items-center justify-between border-b border-slate-200 pb-4">
             <div>
-              <h2 class="text-lg font-bold text-slate-900">ABC Institute of Technology, Pune</h2>
-              <p class="text-xs text-slate-500">AICTE Institutional Master Record (Synthetic Demonstration Profile)</p>
+              <h2 class="text-lg font-bold text-slate-900">${referenceInstitution.institution_name || 'ABC Institute of Technology, Pune'}</h2>
+              <p class="text-xs text-slate-500">Official AICTE Institutional Master Record</p>
             </div>
-            <span class="bg-blue-100 text-blue-900 px-3 py-1 rounded text-xs font-bold">PID: 1-1234567890</span>
+            <span class="bg-blue-100 text-blue-900 px-3 py-1 rounded text-xs font-bold">PID: ${referenceInstitution.permanent_id || '1-1234567890'}</span>
           </div>
 
           <div class="grid grid-cols-2 gap-4 text-xs">
             <div><strong>Establishment Year:</strong> 2004</div>
-            <div><strong>Affiliating University:</strong> Savitribai Phule Pune University</div>
-            <div><strong>Campus Address:</strong> Sector 24, Pradhikaran, Nigdi, Pune, Maharashtra - 411044</div>
+            <div><strong>Affiliating University:</strong> ${referenceInstitution.affiliating_university || 'Savitribai Phule Pune University'}</div>
+            <div><strong>Campus Address:</strong> ${referenceInstitution.address || 'Sector 24, Pradhikaran, Nigdi, Pune, Maharashtra - 411044'}</div>
             <div><strong>Head of Institution:</strong> Dr. Aniruddha Joshi (Principal)</div>
             <div><strong>Contact Email:</strong> principal@abctech.edu.in</div>
-            <div><strong>Land Title Area:</strong> 10.25 Acres (Unencumbered)</div>
+            <div><strong>Land Title Area:</strong> 10.25 Acres (Clear Title)</div>
           </div>
 
           <div class="border-t border-slate-200 pt-4">
-            <h4 class="text-xs font-bold text-slate-700 mb-2">Sanctioned Degree Programmes</h4>
+            <h4 class="text-xs font-bold text-slate-700 mb-2">Sanctioned Programmes and Approved Intake</h4>
             <div class="p-3 bg-slate-50 rounded border border-slate-200 text-xs space-y-1">
               <div class="flex justify-between"><span>UG - Computer Engineering:</span> <strong>120 Seats</strong></div>
               <div class="flex justify-between"><span>UG - Artificial Intelligence & Data Science:</span> <strong>60 Seats</strong></div>
@@ -738,21 +905,35 @@
     // 2. AICTE OFFICER / REVIEWER WORKSPACE VIEWS
     // ========================================================
     function renderOfficerQueue() {
+      if (applications.length === 0) {
+        return `
+          <div class="space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+              <div>
+                <h1 class="text-xl font-bold text-slate-900">AICTE Scrutiny & Verification Queue</h1>
+                <p class="text-xs text-slate-500 mt-1">Regional Scrutiny Directorate • Automated Document & Compliance Scrutiny</p>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl border border-slate-200 p-12 text-center text-slate-500 text-xs space-y-2">
+              <i data-lucide="inbox" class="w-8 h-8 text-slate-400 mx-auto"></i>
+              <div class="font-semibold text-slate-700">No applications currently in scrutiny queue</div>
+              <p>Applications submitted by institutions will appear here for officer review and action.</p>
+            </div>
+          </div>
+        `;
+      }
+
       return `
         <div class="space-y-6">
           <!-- Queue Header -->
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
             <div>
               <h1 class="text-xl font-bold text-slate-900">AICTE Scrutiny & Verification Queue</h1>
-              <p class="text-xs text-slate-500 mt-1">Western Regional Office (WRO) • AI-Assisted Document & Compliance Scrutiny</p>
+              <p class="text-xs text-slate-500 mt-1">Regional Scrutiny Directorate • Automated Document & Compliance Scrutiny</p>
             </div>
             <div class="flex items-center gap-2">
-              <span class="text-xs text-slate-500">Filter Status:</span>
-              <select onchange="filterQueue(this.value)" class="text-xs border border-slate-300 rounded px-2.5 py-1.5 bg-slate-50">
-                <option value="ALL">All Applications (${applications.length})</option>
-                <option value="REVIEW">Under Scrutiny / Review</option>
-                <option value="COMPLETED">Preliminary Checks Completed</option>
-              </select>
+              <span class="text-xs text-slate-500">Total Applications:</span>
+              <span class="text-xs font-bold bg-blue-100 text-blue-900 px-2.5 py-1 rounded">${applications.length}</span>
             </div>
           </div>
 
@@ -775,7 +956,7 @@
                   const warningCount = (app.findings || []).filter(f => f.severity === 'Warning' && f.status !== 'Matched').length;
                   return `
                     <tr class="hover:bg-blue-50/40 transition">
-                      <td class="p-3 font-mono font-bold text-blue-900">${app.application_id}</td>
+                      <td class="p-3 font-mono font-bold text-blue-900">${app.application_id || app.id}</td>
                       <td class="p-3">
                         <div class="font-semibold text-slate-900">${app.institution_name}</div>
                         <div class="text-[10px] text-slate-400">PID: ${app.permanent_id}</div>
@@ -785,7 +966,8 @@
                         <div class="flex items-center gap-1.5">
                           ${criticalCount > 0 ? `<span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded text-[10px] font-bold">${criticalCount} Critical</span>` : ''}
                           ${warningCount > 0 ? `<span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-[10px] font-bold">${warningCount} Warning</span>` : ''}
-                          ${criticalCount === 0 && warningCount === 0 ? `<span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded text-[10px] font-bold">All Passed</span>` : ''}
+                          ${criticalCount === 0 && warningCount === 0 && (app.findings || []).length > 0 ? `<span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded text-[10px] font-bold">All Passed</span>` : ''}
+                          ${(app.findings || []).length === 0 ? `<span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-[10px]">Awaiting Processing</span>` : ''}
                         </div>
                       </td>
                       <td class="p-3">
@@ -808,6 +990,16 @@
 
     // --- 5. SPLIT-SCREEN VERIFICATION WORKSPACE ---
     function renderVerificationWorkspace(app) {
+      if (!app) {
+        return `
+          <div class="bg-white rounded-xl border border-slate-200 p-12 text-center text-slate-500 text-xs space-y-2">
+            <i data-lucide="split" class="w-8 h-8 text-slate-400 mx-auto"></i>
+            <div class="font-semibold text-slate-700">No application selected for scrutiny</div>
+            <p>Please submit an application from the Institution Portal or choose one from the Scrutiny Queue.</p>
+          </div>
+        `;
+      }
+
       const activeDoc = (app.documents || [])[0] || {};
       const findings = app.findings || [];
 
@@ -821,7 +1013,7 @@
               </button>
               <div>
                 <h1 class="text-base font-bold text-slate-900">${app.institution_name} — Scrutiny Workspace</h1>
-                <p class="text-xs text-slate-500">Application: <span class="font-mono text-blue-900 font-bold">${app.application_id}</span> | Permanent ID: ${app.permanent_id}</p>
+                <p class="text-xs text-slate-500">Application: <span class="font-mono text-blue-900 font-bold">${app.application_id || app.id}</span> | Permanent ID: ${app.permanent_id}</p>
               </div>
             </div>
             <div class="flex items-center gap-2">
@@ -841,19 +1033,21 @@
               <div class="px-4 py-3 bg-slate-800 text-white flex justify-between items-center text-xs">
                 <div class="flex items-center gap-2 font-medium truncate">
                   <i data-lucide="file" class="w-4 h-4 text-amber-400"></i>
-                  <span class="truncate">${activeDoc.filename || 'No Document Selected'}</span>
+                  <span class="truncate">${activeDoc.filename || 'No Document Attached'}</span>
                 </div>
                 <div class="flex items-center gap-2">
-                  <a href="/api/documents/view/${activeDoc.filename || 'Doc_A_Correct_EoA.pdf'}" target="_blank" class="text-blue-300 hover:underline flex items-center gap-1 text-[11px]">
-                    <i data-lucide="maximize-2" class="w-3 h-3"></i> Fullscreen
-                  </a>
+                  ${activeDoc.saved_path || activeDoc.filename ? `
+                    <a href="/api/documents/view/${activeDoc.saved_path || activeDoc.filename}" target="_blank" class="text-blue-300 hover:underline flex items-center gap-1 text-[11px]">
+                      <i data-lucide="maximize-2" class="w-3 h-3"></i> Fullscreen
+                    </a>
+                  ` : ''}
                 </div>
               </div>
 
               <!-- Document Viewer Iframe -->
               <div class="flex-1 bg-slate-100 relative">
-                ${activeDoc.filename ? `
-                  <iframe src="/api/documents/view/${activeDoc.filename}" class="w-full h-full border-0"></iframe>
+                ${activeDoc.saved_path || activeDoc.filename ? `
+                  <iframe src="/api/documents/view/${activeDoc.saved_path || activeDoc.filename}" class="w-full h-full border-0"></iframe>
                 ` : `
                   <div class="flex flex-col items-center justify-center h-full text-slate-400 text-xs p-6 text-center">
                     <i data-lucide="file-x" class="w-10 h-10 mb-2"></i>
@@ -866,10 +1060,10 @@
               <div class="p-3 bg-slate-50 border-t border-slate-200 text-[11px] text-slate-600 space-y-1">
                 <div class="flex justify-between">
                   <span>SHA-256 Checksum:</span>
-                  <span class="font-mono text-slate-800 truncate max-w-[220px]">${activeDoc.sha256_hash || 'e3b0c44298fc...'}</span>
+                  <span class="font-mono text-slate-800 truncate max-w-[220px]">${activeDoc.sha256_hash || 'Not computed'}</span>
                 </div>
                 <div class="flex justify-between">
-                  <span>Tamper & Anomaly Flags:</span>
+                  <span>Cryptographic Anomaly Status:</span>
                   <span class="${(activeDoc.anomaly_flags || []).length > 0 ? 'text-rose-600 font-bold' : 'text-emerald-600 font-semibold'}">
                     ${(activeDoc.anomaly_flags || []).length > 0 ? activeDoc.anomaly_flags.join(', ') : 'No Tampering Detected'}
                   </span>
@@ -892,7 +1086,9 @@
 
               <!-- Findings List -->
               <div class="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar text-xs">
-                ${findings.map(f => {
+                ${findings.length === 0 ? `
+                  <div class="p-8 text-center text-slate-400">No findings generated yet. Document processing required.</div>
+                ` : findings.map(f => {
                   const isPass = f.status === 'Matched';
                   const isCritical = f.severity === 'Critical';
                   const borderColor = isPass ? 'border-emerald-200 bg-emerald-50/30' : (isCritical ? 'border-rose-300 bg-rose-50/40' : 'border-amber-200 bg-amber-50/30');
@@ -953,12 +1149,20 @@
 
     // --- 6. EVIDENCE-LINKED REPORT VIEW ---
     function renderEvidenceReportView(app) {
+      if (!app) {
+        return `
+          <div class="max-w-4xl mx-auto bg-white rounded-xl border border-slate-200 shadow-sm p-12 text-center text-slate-500 text-xs">
+            No application selected for report viewing.
+          </div>
+        `;
+      }
+
       return `
         <div class="max-w-4xl mx-auto bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-6">
           <div class="flex justify-between items-center border-b border-slate-200 pb-4">
             <div>
               <h2 class="text-lg font-bold text-slate-900">Official Evidence-Linked Verification Report</h2>
-              <p class="text-xs text-slate-500">Problem ID: SIH26261 • Traceable Automated Scrutiny Matrix</p>
+              <p class="text-xs text-slate-500">Traceable Automated Scrutiny Matrix & Regulatory Check Records</p>
             </div>
             <button onclick="window.print()" class="px-3 py-1.5 border border-slate-300 rounded text-xs font-semibold hover:bg-slate-50 flex items-center gap-1.5">
               <i data-lucide="printer" class="w-3.5 h-3.5"></i> Print Matrix
@@ -967,7 +1171,7 @@
 
           <!-- Summary Meta Table -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-50 p-4 rounded-lg border border-slate-200 text-xs">
-            <div><span class="text-slate-500 block">APPLICATION ID:</span> <strong class="font-mono text-blue-900">${app.application_id}</strong></div>
+            <div><span class="text-slate-500 block">APPLICATION ID:</span> <strong class="font-mono text-blue-900">${app.application_id || app.id}</strong></div>
             <div><span class="text-slate-500 block">INSTITUTION:</span> <strong>${app.institution_name}</strong></div>
             <div><span class="text-slate-500 block">PERMANENT ID:</span> <strong class="font-mono">${app.permanent_id}</strong></div>
             <div><span class="text-slate-500 block">PRELIMINARY STATUS:</span> <strong class="text-blue-800">${app.status}</strong></div>
@@ -1015,11 +1219,11 @@
               </div>
             </div>
 
-            <div class="bg-amber-50 border border-amber-300 p-3 rounded-lg text-amber-900 text-xs flex items-start gap-2">
-              <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5"></i>
+            <div class="bg-blue-50 border border-blue-200 p-3 rounded-lg text-blue-900 text-xs flex items-start gap-2">
+              <i data-lucide="info" class="w-4 h-4 text-blue-700 flex-shrink-0 mt-0.5"></i>
               <div>
-                <strong>SIMULATED ISSUER VERIFICATION — NOT A LIVE GOVERNMENT INTEGRATION.</strong><br/>
-                This module proves architectural feasibility for future integrations with DigiLocker, State Fire Directorates, and Municipal Town Planning APIs.
+                <strong>Simulated Issuing Authority Verification Sandbox</strong><br/>
+                This module illustrates electronic verification against State Fire Services Directorates, Municipal Corporations, and Town Planning bodies. Results in this sandbox are simulated to demonstrate the API handshake architecture.
               </div>
             </div>
 
@@ -1030,6 +1234,13 @@
                 <button onclick="runPageIssuerQuery()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded text-xs font-semibold flex items-center gap-1.5">
                   <i data-lucide="search" class="w-4 h-4"></i> Query Authority
                 </button>
+              </div>
+              <div class="mt-2 flex flex-wrap gap-1.5 text-xs">
+                <span class="text-slate-500">Sample Registry References:</span>
+                <button onclick="setCertPin('MSFS-NOC-2026-101')" class="underline text-blue-600 font-mono">MSFS-NOC-2026-101 (Fire Safety NOC)</button>
+                <button onclick="setCertPin('PMC-BCC-2024-102')" class="underline text-blue-600 font-mono">PMC-BCC-2024-102 (Bldg Completion)</button>
+                <button onclick="setCertPin('CERT-DEMO-EXPIRED')" class="underline text-rose-600 font-mono">CERT-DEMO-EXPIRED (Pollution Board)</button>
+                <button onclick="setCertPin('CERT-DEMO-TAMPERED')" class="underline text-amber-600 font-mono">CERT-DEMO-TAMPERED (Revenue Dept)</button>
               </div>
             </div>
 
@@ -1043,7 +1254,7 @@
 
     // --- 8. INFRASTRUCTURE COMPLIANCE REVIEW ---
     function renderInfrastructureReviewPage(app) {
-      const items = app.infrastructure_items || [];
+      const items = (app && app.infrastructure_items) ? app.infrastructure_items : [];
 
       return `
         <div class="space-y-6">
@@ -1077,9 +1288,11 @@
 
                 <div class="flex justify-between items-center pt-2 border-t border-slate-100 text-xs">
                   <span class="text-slate-400">Last Verified: ${item.last_inspected || '2026-06-18'}</span>
-                  <button onclick="openActionModal('${app.id}')" class="text-blue-700 font-semibold hover:underline">
-                    Add Observation / Flag →
-                  </button>
+                  ${app ? `
+                    <button onclick="openActionModal('${app.id}')" class="text-blue-700 font-semibold hover:underline">
+                      Add Observation / Flag →
+                    </button>
+                  ` : ''}
                 </div>
               </div>
             `).join('')}
@@ -1098,25 +1311,29 @@
           </div>
 
           <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-            <div class="divide-y divide-slate-100 text-xs">
-              ${auditLog.map(log => `
-                <div class="p-4 flex items-start gap-3 hover:bg-slate-50">
-                  <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-800 flex items-center justify-center font-bold flex-shrink-0">
-                    <i data-lucide="shield" class="w-4 h-4"></i>
-                  </div>
-                  <div class="flex-1 space-y-1">
-                    <div class="flex justify-between items-center">
-                      <span class="font-bold text-slate-900">${log.action_type}</span>
-                      <span class="text-[11px] text-slate-400 font-mono">${log.timestamp}</span>
+            ${auditLog.length === 0 ? `
+              <div class="p-8 text-center text-slate-400 text-xs">No audit logs recorded yet.</div>
+            ` : `
+              <div class="divide-y divide-slate-100 text-xs">
+                ${auditLog.map(log => `
+                  <div class="p-4 flex items-start gap-3 hover:bg-slate-50">
+                    <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-800 flex items-center justify-center font-bold flex-shrink-0">
+                      <i data-lucide="shield" class="w-4 h-4"></i>
                     </div>
-                    <div class="text-[11px] text-slate-500">
-                      Officer: <strong>${log.officer_name}</strong> (${log.officer_role}) • Application: <span class="font-mono text-blue-900">${log.application_id}</span>
+                    <div class="flex-1 space-y-1">
+                      <div class="flex justify-between items-center">
+                        <span class="font-bold text-slate-900">${log.action_type}</span>
+                        <span class="text-[11px] text-slate-400 font-mono">${log.timestamp}</span>
+                      </div>
+                      <div class="text-[11px] text-slate-500">
+                        Officer: <strong>${log.officer_name}</strong> (${log.officer_role}) • Application: <span class="font-mono text-blue-900">${log.application_id}</span>
+                      </div>
+                      <p class="text-xs text-slate-700 mt-1">${log.remarks}</p>
                     </div>
-                    <p class="text-xs text-slate-700 mt-1">${log.remarks}</p>
                   </div>
-                </div>
-              `).join('')}
-            </div>
+                `).join('')}
+              </div>
+            `}
           </div>
         </div>
       `;
@@ -1135,24 +1352,24 @@
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="bg-white p-5 rounded-xl border-2 border-blue-600 shadow-sm space-y-2">
-              <span class="bg-blue-100 text-blue-900 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Primary Demonstration Category</span>
+              <span class="bg-blue-100 text-blue-900 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Standard Annual Category</span>
               <h3 class="font-bold text-sm text-slate-900">Extension of Approval (EoA)</h3>
-              <p class="text-xs text-slate-500">Annual validation of approved course catalogue and student intake limits for existing colleges.</p>
+              <p class="text-xs text-slate-500">Annual renewal and validation of sanctioned intake, courses, and statutory compliance for continuing institutions.</p>
               <div class="text-xs font-semibold text-emerald-700">✓ Active & Fully Configured</div>
             </div>
 
-            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-2 opacity-75">
-              <span class="bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Future Expansion</span>
+            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-2">
+              <span class="bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Institutional Appraisal</span>
               <h3 class="font-bold text-sm text-slate-900">Grant of New Institution</h3>
-              <p class="text-xs text-slate-500">Appraisal of newly proposed engineering or polytechnic campuses.</p>
-              <div class="text-xs text-slate-400">Modular Adapter Ready</div>
+              <p class="text-xs text-slate-500">Comprehensive appraisal of newly proposed polytechnic, engineering, management, or pharmacy colleges.</p>
+              <div class="text-xs text-blue-700 font-semibold">Active Framework</div>
             </div>
 
-            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-2 opacity-75">
-              <span class="bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Future Expansion</span>
+            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-2">
+              <span class="bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Capacity Enhancement</span>
               <h3 class="font-bold text-sm text-slate-900">Increase in Student Intake</h3>
-              <p class="text-xs text-slate-500">Validation of NBA accreditation and built-up area for course expansions.</p>
-              <div class="text-xs text-slate-400">Modular Adapter Ready</div>
+              <p class="text-xs text-slate-500">Validation of NBA accreditation and built-up area for course expansions and emerging specializations.</p>
+              <div class="text-xs text-blue-700 font-semibold">Active Framework</div>
             </div>
           </div>
         </div>
@@ -1260,7 +1477,7 @@
 
           <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-4 text-xs">
             <div class="bg-blue-50 border border-blue-200 p-3 rounded text-blue-900 font-medium">
-              These records represent authorized AICTE council records for the demonstration institution (ABC Institute of Technology, Pune).
+              Authorized AICTE Institutional Reference Repository for benchmark comparison.
             </div>
 
             <div class="grid grid-cols-2 gap-4">
@@ -1309,65 +1526,74 @@
     // ========================================================
     // 4. ACTION HANDLERS & API CALLS
     // ========================================================
-    async function loadScenario(scenarioName) {
-      try {
-        const res = await fetch(`/api/demo/run-scenario/${scenarioName}`, { method: 'POST' });
-        const json = await res.json();
-        if (json.status === 'success') {
-          await loadInitialData();
-          currentAppId = 'APP-2026-001';
-          // Switch to workspace to see the results immediately
-          switchTab('workspace', currentAppId);
-          alert(`Scenario Loaded: ${json.scenario}`);
-        }
-      } catch (err) {
-        console.error('Scenario load error:', err);
-      }
-    }
-
-    async function uploadPreset(presetChoice) {
-      try {
-        const formData = new FormData();
-        formData.append('doc_type', presetChoice.includes('Fire') ? 'Fire Safety NOC' : 'Extension of Approval (EoA)');
-        formData.append('preset_choice', presetChoice);
-
-        const res = await fetch(`/api/applications/${currentAppId}/upload-document`, {
-          method: 'POST',
-          body: formData
-        });
-        const json = await res.json();
-        if (json.status === 'success') {
-          await loadInitialData();
-          switchTab('workspace', currentAppId);
-        }
-      } catch (err) {
-        console.error('Upload preset error:', err);
-      }
-    }
-
-    async function handleCustomUpload() {
-      const input = document.getElementById('customFileInput');
-      if (!input.files || input.files.length === 0) {
-        alert('Please choose a file to upload first.');
+    async function handleApplicationSubmission(e) {
+      e.preventDefault();
+      const fileInput = document.getElementById('eoaFileInput');
+      if (!fileInput.files || fileInput.files.length === 0) {
+        alert('Please select an official Extension of Approval (EoA) PDF document to upload.');
         return;
       }
-      const file = input.files[0];
-      const formData = new FormData();
-      formData.append('doc_type', 'Extension of Approval (EoA)');
-      formData.append('file', file);
+
+      const submitBtn = document.getElementById('submitBtn');
+      const progressBox = document.getElementById('submissionProgress');
+      submitBtn.disabled = true;
+      submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      progressBox.classList.remove('hidden');
+
+      const instName = document.getElementById('appInstName').value.trim();
+      const permId = document.getElementById('appPermId').value.trim();
+      const appId = document.getElementById('appIdInput').value.trim();
+      const category = document.getElementById('appCategory').value;
+      const ay = document.getElementById('appAcademicYear').value;
+      const email = document.getElementById('appEmail').value.trim();
+      const file = fileInput.files[0];
 
       try {
-        const res = await fetch(`/api/applications/${currentAppId}/upload-document`, {
+        // 1. Create Application
+        document.getElementById('progressText').innerText = "1/3. Initializing application record in council repository...";
+        const createRes = await fetch('/api/applications/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            institution_name: instName,
+            permanent_id: permId,
+            application_id: appId,
+            category: category,
+            academic_year: ay,
+            contact_email: email
+          })
+        });
+        const createJson = await createRes.json();
+        const createdAppId = createJson.data.id;
+
+        // 2. Upload Document & Run OCR Text Extraction + Verification
+        document.getElementById('progressText').innerText = "2/3. Extracting digital PDF text with PyMuPDF & parsing regulatory metadata...";
+        const formData = new FormData();
+        formData.append('doc_type', 'Extension of Approval (EoA)');
+        formData.append('file', file);
+
+        const uploadRes = await fetch(`/api/applications/${createdAppId}/upload-document`, {
           method: 'POST',
           body: formData
         });
-        const json = await res.json();
-        if (json.status === 'success') {
-          await loadInitialData();
-          switchTab('workspace', currentAppId);
-        }
+        const uploadJson = await uploadRes.json();
+
+        // 3. Submit Application for Scrutiny
+        document.getElementById('progressText').innerText = "3/3. Cross-referencing institutional reference records & logging audit trail...";
+        await fetch(`/api/applications/${createdAppId}/submit`, { method: 'POST' });
+
+        // Reload fresh data
+        await loadInitialData();
+        currentAppId = createdAppId;
+
+        // Redirect to workspace / details to view results
+        switchTab('workspace', createdAppId);
       } catch (err) {
-        console.error('Custom upload error:', err);
+        console.error('Submission error:', err);
+        alert('Application processing encountered an error. Please check console logs.');
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        progressBox.classList.add('hidden');
       }
     }
 
@@ -1383,7 +1609,7 @@
       body.innerHTML = `
         <div class="space-y-4">
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs">
-            <div><span class="text-slate-400 block">APPLICATION ID:</span> <strong class="font-mono">${app.application_id}</strong></div>
+            <div><span class="text-slate-400 block">APPLICATION ID:</span> <strong class="font-mono text-blue-900">${app.application_id || app.id}</strong></div>
             <div><span class="text-slate-400 block">INSTITUTION:</span> <strong>${app.institution_name}</strong></div>
             <div><span class="text-slate-400 block">PERMANENT ID:</span> <strong class="font-mono">${app.permanent_id}</strong></div>
             <div><span class="text-slate-400 block">OVERALL SCORE:</span> <strong class="text-blue-800">${app.overall_score}%</strong></div>
@@ -1391,7 +1617,7 @@
 
           <div class="space-y-3">
             <h4 class="font-bold text-slate-800 text-xs">Automated Finding Records:</h4>
-            ${findings.map(f => `
+            ${findings.length === 0 ? '<div class="text-slate-400 text-xs">No automated findings available.</div>' : findings.map(f => `
               <div class="border rounded-lg p-3 space-y-1.5 ${f.status === 'Matched' ? 'bg-emerald-50/40 border-emerald-200' : 'bg-rose-50/40 border-rose-200'}">
                 <div class="flex justify-between items-center text-xs">
                   <span class="font-bold text-slate-900">${f.rule_name}</span>
@@ -1528,6 +1754,47 @@
         `;
       } catch (err) {
         box.innerHTML = `<div class="text-xs text-rose-600">Verification request error</div>`;
+      }
+    }
+
+    async function saveReferenceRecord() {
+      const name = document.getElementById('refInstName').value;
+      const pid = document.getElementById('refPermId').value;
+      const aid = document.getElementById('refAppId').value;
+      const ay = document.getElementById('refAy').value;
+
+      try {
+        const res = await fetch('/api/admin/reference-record', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            institution_name: name,
+            permanent_id: pid,
+            application_id: aid,
+            academic_year: ay
+          })
+        });
+        const json = await res.json();
+        if (json.status === 'success') {
+          referenceInstitution = json.data;
+          alert('Institutional reference records updated successfully.');
+        }
+      } catch (err) {
+        console.error('Save reference error:', err);
+      }
+    }
+
+    async function toggleRuleActive(ruleId) {
+      try {
+        const res = await fetch(`/api/admin/rules/toggle/${ruleId}`, { method: 'POST' });
+        const json = await res.json();
+        if (json.status === 'success') {
+          const rule = complianceRules.find(r => r.rule_id === ruleId);
+          if (rule) rule.is_active = json.rule.is_active;
+          renderCurrentView();
+        }
+      } catch (err) {
+        console.error('Toggle rule error:', err);
       }
     }
 

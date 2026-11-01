@@ -8,7 +8,9 @@ from app.main import (
     health, get_applications, run_demo_scenario, 
     verify_certificate_with_issuer, record_officer_action,
     get_audit_log, get_reference_record, get_rules,
-    OfficerActionRequest, IssuerQueryRequest
+    create_application, submit_application, get_application_by_id,
+    upload_document,
+    OfficerActionRequest, IssuerQueryRequest, CreateAppRequest
 )
 
 def test_full_pipeline_direct():
@@ -82,8 +84,35 @@ def test_full_pipeline_direct():
     assert rules["status"] == "success"
     print(f"Configured rules count: {len(rules['data'])}")
 
+    print("\n--- 9. Testing Fresh Application Creation & Scrutiny Visibility ---")
+    new_app_res = create_application(CreateAppRequest(
+        category="Extension of Approval (EoA)",
+        academic_year="2026-27",
+        institution_name="ABC Institute of Technology",
+        permanent_id="1-1234567890",
+        contact_email="principal@abctech.edu.in",
+        application_id="APP-2026-101"
+    ))
+    assert new_app_res["status"] == "success"
+    created_app = new_app_res["data"]
+    app_id = created_app["id"]
+    print(f"Fresh application created: {app_id} (Status: {created_app['status']})")
+    assert created_app["status"] == "Draft"
+
+    sub_res = submit_application(app_id)
+    assert sub_res["status"] == "success"
+    submitted_app = sub_res["data"]
+    print(f"Fresh application submitted: {app_id} (Status: {submitted_app['status']})")
+    assert submitted_app["status"] == "Submitted"
+
+    # Verify visibility in scrutiny queue
+    queue_apps = get_applications()["data"]
+    app_in_queue = any(a["id"] == app_id for a in queue_apps)
+    assert app_in_queue, f"Fresh application {app_id} must appear in officer scrutiny queue"
+    print(f"Fresh application {app_id} verified in Scrutiny Officer Queue.")
+
     print("\n========================================================")
-    print("ALL 8 VERIFICATION & COMPLIANCE PIPELINE TESTS PASSED!")
+    print("ALL 9 VERIFICATION, LIFECYCLE & WORKFLOW TESTS PASSED!")
     print("========================================================")
 
 if __name__ == "__main__":
